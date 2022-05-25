@@ -27,6 +27,8 @@ export class ConsultasController {
   }
 
   @Get()
+  @UseGuards(AuthGuard('jwt'))
+  @HttpCode(HttpStatus.OK)
   findAll() {
     return this.consultasService.findAll();
   }
@@ -39,6 +41,8 @@ export class ConsultasController {
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard('jwt'))
+  @HttpCode(HttpStatus.OK)
   update(
     @Param('id') id: string,
     @Body() updateConsultaDto: UpdateConsultaDto,
@@ -47,16 +51,22 @@ export class ConsultasController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard('jwt'))
+  @HttpCode(HttpStatus.OK)
   remove(@Param('id') id: string) {
     return this.consultasService.remove(id);
   }
 
   @Get('/filter/paciente/:telefone')
+  @UseGuards(AuthGuard('jwt'))
+  @HttpCode(HttpStatus.OK)
   findByPaciente(@Param('telefone') telefone: string) {
     return this.consultasService.findByPaciente(telefone);
   }
 
   @Get('/filter/consulta/:data')
+  @UseGuards(AuthGuard('jwt'))
+  @HttpCode(HttpStatus.OK)
   findByData(@Param('data') data: string) {
     return this.consultasService.findByData(data);
   }

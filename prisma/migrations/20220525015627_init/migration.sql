@@ -19,7 +19,7 @@ CREATE TABLE "paciente" (
 -- CreateTable
 CREATE TABLE "consulta" (
     "id" TEXT NOT NULL,
-    "data" TIMESTAMP(3) NOT NULL,
+    "data" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "pacienteId" TEXT NOT NULL,
 
     CONSTRAINT "consulta_pkey" PRIMARY KEY ("id")

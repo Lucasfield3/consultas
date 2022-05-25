@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { FuncionariosService } from './funcionarios.service';
 import { CreateFuncionarioDto } from './dto/create-funcionario.dto';
 
@@ -24,23 +16,23 @@ export class FuncionariosController {
     return this.funcionariosService.signin(createFuncionarioDto);
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.funcionariosService.findAll();
-  // }
+  @Get()
+  findAll() {
+    return this.funcionariosService.findAll();
+  }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.funcionariosService.findOne(id);
-  // }
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.funcionariosService.findOne(id);
+  }
 
   // @Patch(':id')
   // update(@Param('id') id: string, @Body() updateFuncionarioDto: UpdateFuncionarioDto) {
   //   return this.funcionariosService.update(+id, updateFuncionarioDto);
   // }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.funcionariosService.remove(+id);
-  // }
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.funcionariosService.remove(id);
+  }
 }

@@ -11,6 +11,14 @@ export class PacientesRepository {
   async create(data: CreatePacienteDto): Promise<PacienteEntity> {
     return this.prisma.paciente.create({
       data,
+      include: {
+        consulta: {
+          select: {
+            id: true,
+            data: true,
+          },
+        },
+      },
     });
   }
 
@@ -40,6 +48,12 @@ export class PacientesRepository {
           },
         },
       },
+    });
+  }
+
+  async remove(id: string): Promise<PacienteEntity> {
+    return this.prisma.paciente.delete({
+      where: { id },
     });
   }
 }

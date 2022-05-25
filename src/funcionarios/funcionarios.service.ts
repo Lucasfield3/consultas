@@ -19,28 +19,36 @@ export class FuncionariosService {
   public async signin(
     createFuncionarioDto: CreateFuncionarioDto,
   ): Promise<{ name: string; jwtToken: string; senha: string }> {
-    const funcionario = await this.funcionarioRepository.findOne(
+    const funcionarioSearched = await this.funcionarioRepository.findOne(
       createFuncionarioDto.id,
+      createFuncionarioDto.nome,
     );
-    const match = await this.checkPassword(
-      createFuncionarioDto.hash_senha,
-      funcionario,
-    );
+
+    const match = await this.checkPassword(funcionarioSearched);
 
     if (!match) {
       throw new NotFoundException('Invalid credentials.');
     }
 
-    const jwtToken = await this.authService.createAccessToken(funcionario.id);
+    const jwtToken = await this.authService.createAccessToken(
+      funcionarioSearched.id,
+    );
 
-    return { name: funcionario.nome, jwtToken, senha: funcionario.hash_senha };
+    return {
+      name: funcionarioSearched.nome,
+      jwtToken,
+      senha: funcionarioSearched.hash_senha,
+    };
   }
 
   private async checkPassword(
-    password: string,
-    funcionario: FuncionarioEntity,
+    funcionarioentity: FuncionarioEntity,
   ): Promise<boolean> {
-    const match = await bcrypt.compare(password, funcionario.hash_senha);
+    const passwordAccess = process.env.SENHA;
+    const match = await bcrypt.compare(
+      passwordAccess,
+      funcionarioentity.hash_senha,
+    );
 
     if (!match) {
       throw new NotFoundException('Password not found');
@@ -49,19 +57,19 @@ export class FuncionariosService {
     return match;
   }
 
-  // findAll() {
-  //   return this.funcionarioRepository.findAll();
-  // }
+  findAll() {
+    return this.funcionarioRepository.findAll();
+  }
 
-  // findOne(id: string) {
-  //   return this.funcionarioRepository.findOne(id);
-  // }
+  findOne(id: string) {
+    return this.funcionarioRepository.finfById(id);
+  }
 
   // update(id: number, updateDto: UpdateDto) {
   //   return this.funcionarioRepository.update(id, updateDto);
   // }
 
-  // remove(id: number) {
-  //   return this.funcionarioRepository.removeOne(id);
-  // }
+  remove(id: string) {
+    return this.funcionarioRepository.remove(id);
+  }
 }

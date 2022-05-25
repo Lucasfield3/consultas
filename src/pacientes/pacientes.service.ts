@@ -22,7 +22,7 @@ export class PacientesService {
     return `This action updates a #${id} paciente`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} paciente`;
+  remove(id: string) {
+    return this.pacientesRepository.remove(id);
   }
 }

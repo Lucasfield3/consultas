@@ -10,12 +10,25 @@ export class ConsultasRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createConsultaDto: CreateConsultaDto): Promise<ConsultaEntity> {
-    const { pacienteTel } = createConsultaDto;
+    const { pacienteTel, pacienteId, pacienteNome } = createConsultaDto;
 
     delete createConsultaDto.pacienteTel;
+    delete createConsultaDto.pacienteNome;
 
     const paciente = await this.prisma.paciente.findFirst({
-      where: { telefone: pacienteTel },
+      where: {
+        AND: [
+          {
+            id: pacienteId ? pacienteId : undefined,
+          },
+          {
+            nome: pacienteNome,
+          },
+          {
+            telefone: pacienteTel,
+          },
+        ],
+      },
     });
 
     if (!paciente) {
@@ -43,39 +56,40 @@ export class ConsultasRepository {
       },
     });
   }
-
   async update(
     updateConsultaDto: UpdateConsultaDto,
     id: string,
   ): Promise<ConsultaEntity> {
-    const { pacienteTel } = updateConsultaDto;
+    const { pacienteTel, pacienteNome, pacienteId } = updateConsultaDto;
 
-    if (!pacienteTel) {
-      return this.prisma.consulta.update({
-        where: { id },
-        data: updateConsultaDto,
-        include: {
-          paciente: {
-            select: {
-              nome: true,
-              telefone: true,
-            },
-          },
-        },
-      });
-    }
+    delete updateConsultaDto.pacienteTel;
+    delete updateConsultaDto.pacienteNome;
 
     const paciente = await this.prisma.paciente.findFirst({
       where: {
-        telefone: pacienteTel,
+        AND: [
+          {
+            id: pacienteId ? pacienteId : undefined,
+          },
+          {
+            nome: pacienteNome,
+          },
+          {
+            telefone: pacienteTel,
+          },
+        ],
       },
     });
+
+    if (!paciente) {
+      throw new NotFoundException('Paciente não encontrado');
+    }
 
     const data: Prisma.ConsultaUpdateInput = {
       ...updateConsultaDto,
       paciente: {
         connect: {
-          id: paciente.id,
+          id: paciente.id ? paciente.id : undefined,
         },
       },
     };
@@ -95,12 +109,13 @@ export class ConsultasRepository {
   }
 
   async findOne(id: string): Promise<ConsultaEntity> {
-    return this.prisma.consulta.findUnique({
-      where: { id },
+    return this.prisma.consulta.findFirst({
+      where: { id: id ? id : undefined },
       include: {
         paciente: {
           select: {
             nome: true,
+            telefone: true,
           },
         },
       },
@@ -114,6 +129,14 @@ export class ConsultasRepository {
           telefone,
         },
       },
+      include: {
+        paciente: {
+          select: {
+            nome: true,
+            telefone: true,
+          },
+        },
+      },
     });
   }
 
@@ -122,12 +145,33 @@ export class ConsultasRepository {
       where: {
         data,
       },
+      include: {
+        paciente: {
+          select: {
+            nome: true,
+            telefone: true,
+          },
+        },
+      },
     });
   }
 
   async remove(id: string): Promise<ConsultaEntity> {
     return this.prisma.consulta.delete({
       where: { id },
+    });
+  }
+
+  async findAll(): Promise<ConsultaEntity[]> {
+    return this.prisma.consulta.findMany({
+      include: {
+        paciente: {
+          select: {
+            nome: true,
+            telefone: true,
+          },
+        },
+      },
     });
   }
 }

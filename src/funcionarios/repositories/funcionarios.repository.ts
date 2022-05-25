@@ -13,15 +13,45 @@ export class FuncionariosRepository {
     });
   }
 
-  async findOne(id: string): Promise<FuncionarioEntity> {
+  async findOne(id: string, nome?: string): Promise<FuncionarioEntity> {
     const funcionario = await this.prisma.funcionario.findFirst({
-      where: { id },
+      where: {
+        AND: [
+          {
+            id: id ? id : undefined,
+          },
+          {
+            nome: nome,
+          },
+        ],
+      },
     });
+    // const funcionarioArray = await this.prisma.$queryRaw<
+    //   FuncionarioEntity[]
+    // >`SELECT * FROM funcionario WHERE id = ${id}`;
+
+    // const funcionario = await this.prisma.funcionario.findFirst({
+    //   where: { id: funcionarioArray[0].id },
+    // });
 
     if (!funcionario) {
       throw new NotFoundException('funcionario não foi encontrado');
     }
 
     return funcionario;
+  }
+
+  async remove(id: string): Promise<FuncionarioEntity> {
+    return this.prisma.funcionario.delete({
+      where: { id },
+    });
+  }
+
+  async findAll(): Promise<FuncionarioEntity[]> {
+    return this.prisma.funcionario.findMany();
+  }
+
+  async finfById(id: string): Promise<FuncionarioEntity> {
+    return this.prisma.funcionario.findFirst({ where: { id } });
   }
 }

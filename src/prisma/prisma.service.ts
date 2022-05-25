@@ -15,12 +15,15 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
         params.args.data = funcionario;
       }
 
-      if (params.action === 'findUnique' && params.model === 'Funcionario') {
-        const funcionario = params.args.data;
-        if (!funcionario.id) {
-          return next(params);
-        }
-      }
+      // if (params.action === 'findFirst' && params.model === 'Funcionario') {
+      //   const funcionario = params.args.data;
+      //   if (!funcionario.id) {
+      //     return next(params);
+      //   }
+      //   if (!funcionario.hash_senha) {
+      //     return next(params);
+      //   }
+      // }
       return next(params);
     });
   }

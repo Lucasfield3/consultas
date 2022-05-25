@@ -11,7 +11,7 @@ export class ConsultasService {
   }
 
   findAll() {
-    return `This action returns all consultas`;
+    return this.consultasService.findAll();
   }
 
   findOne(id: string) {

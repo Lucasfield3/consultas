@@ -43,6 +43,6 @@ export class PacientesController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.pacientesService.remove(+id);
+    return this.pacientesService.remove(id);
   }
 }

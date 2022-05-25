@@ -5,5 +5,12 @@ export class CreateConsultaDto {
   @IsNotEmpty()
   pacienteTel: string;
 
-  data?: string;
+  pacienteId: string;
+
+  @IsString()
+  @IsNotEmpty()
+  pacienteNome: string;
+
+  @IsNotEmpty()
+  data: string;
 }
