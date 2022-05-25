@@ -26,11 +26,6 @@ export class FuncionariosController {
     return this.funcionariosService.findOne(id);
   }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateFuncionarioDto: UpdateFuncionarioDto) {
-  //   return this.funcionariosService.update(+id, updateFuncionarioDto);
-  // }
-
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.funcionariosService.remove(id);
