@@ -65,10 +65,6 @@ export class FuncionariosService {
     return this.funcionarioRepository.finfById(id);
   }
 
-  // update(id: number, updateDto: UpdateDto) {
-  //   return this.funcionarioRepository.update(id, updateDto);
-  // }
-
   remove(id: string) {
     return this.funcionarioRepository.remove(id);
   }

@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePacienteDto } from './dto/create-paciente.dto';
-import { UpdatePacienteDto } from './dto/update-paciente.dto';
 import { PacientesRepository } from './repositories/pacientes.repository';
 
 @Injectable()
@@ -16,10 +15,6 @@ export class PacientesService {
 
   findOne(id: string) {
     return this.pacientesRepository.findOne(id);
-  }
-
-  update(id: number, updatePacienteDto: UpdatePacienteDto) {
-    return `This action updates a #${id} paciente`;
   }
 
   remove(id: string) {

@@ -26,13 +26,6 @@ export class FuncionariosRepository {
         ],
       },
     });
-    // const funcionarioArray = await this.prisma.$queryRaw<
-    //   FuncionarioEntity[]
-    // >`SELECT * FROM funcionario WHERE id = ${id}`;
-
-    // const funcionario = await this.prisma.funcionario.findFirst({
-    //   where: { id: funcionarioArray[0].id },
-    // });
 
     if (!funcionario) {
       throw new NotFoundException('funcionario não foi encontrado');
